@@ -1,0 +1,5 @@
+name: Rise
+version: '1.0-SNAPSHOT'
+main: me.quartz.rise.Rise
+commands:
+  map:
