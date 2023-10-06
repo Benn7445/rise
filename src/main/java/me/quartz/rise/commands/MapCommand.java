@@ -61,14 +61,16 @@ public class MapCommand implements CommandExecutor {
                     } else commandSender.sendMessage(ChatColor.RED + "Map with id " + args[1] + " wasn't found.");
                 } else commandSender.sendMessage(ChatColor.RED + "Usage: /map info [id]");
             } else if (args[0].equalsIgnoreCase("waiting")) {
-                if (commandSender instanceof Player) {
-                    Player player = (Player) commandSender;
-                    Map map = Rise.getInstance().getMapManager().getMapById(Integer.parseInt(args[1]));
-                    if (map != null) {
-                        map.setWaitingLocation(player.getLocation());
-                        commandSender.sendMessage(ChatColor.GREEN + "Waiting location of map " + map.getId() + " has been set.");
-                    } else commandSender.sendMessage(ChatColor.RED + "Map with id " + args[1] + " wasn't found.");
-                } else commandSender.sendMessage(ChatColor.RED + "Only players can execute this command.");
+                if(args.length > 1) {
+                    if (commandSender instanceof Player) {
+                        Player player = (Player) commandSender;
+                        Map map = Rise.getInstance().getMapManager().getMapById(Integer.parseInt(args[1]));
+                        if (map != null) {
+                            map.setWaitingLocation(player.getLocation());
+                            commandSender.sendMessage(ChatColor.GREEN + "Waiting location of map " + map.getId() + " has been set.");
+                        } else commandSender.sendMessage(ChatColor.RED + "Map with id " + args[1] + " wasn't found.");
+                    } else commandSender.sendMessage(ChatColor.RED + "Only players can execute this command.");
+                } else commandSender.sendMessage(ChatColor.RED + "Usage: /map waiting [id]");
             } else if (args[0].equalsIgnoreCase("location")) {
                 if (commandSender instanceof Player) {
                     Player player = (Player) commandSender;
@@ -117,7 +119,7 @@ public class MapCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("door")) {
                 if (commandSender instanceof Player) {
                     Player player = (Player) commandSender;
-                    if (args.length > 1) {
+                    if (args.length > 2) {
                         Map map = Rise.getInstance().getMapManager().getMapById(Integer.parseInt(args[1]));
                         if (map != null) {
                             if (Integer.parseInt(args[2]) > 0 && Integer.parseInt(args[2]) <= map.getArenas().size()) {

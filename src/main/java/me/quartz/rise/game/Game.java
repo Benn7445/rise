@@ -9,16 +9,23 @@ import java.util.Random;
 
 public class Game {
 
-    private final Map map;
+    private Map map;
     private final List<Player> players;
 
     public Game() {
-        this.map = Rise.getInstance().getMapManager().getMaps().get(new Random().nextInt(Rise.getInstance().getMapManager().getMaps().size()));
+        if(!Rise.getInstance().getMapManager().getReadyMaps().isEmpty())
+            this.map = Rise.getInstance().getMapManager().getReadyMaps().get(new Random().nextInt(Rise.getInstance().getMapManager().getReadyMaps().size()));
+        else this.map = null;
         this.players = new ArrayList<>();
     }
 
     public Map getMap() {
         return map;
+    }
+
+    public void setMap() {
+        if(!Rise.getInstance().getMapManager().getReadyMaps().isEmpty())
+            this.map = Rise.getInstance().getMapManager().getReadyMaps().get(new Random().nextInt(Rise.getInstance().getMapManager().getReadyMaps().size()));
     }
 
     public List<Player> getPlayers() {

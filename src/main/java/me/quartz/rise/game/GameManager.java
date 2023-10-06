@@ -7,6 +7,8 @@ public class GameManager {
     private Game game;
 
     public Game getGame() {
+        if(game == null) setupGame();
+        if(game.getMap() == null) game.setMap();
         return game;
     }
 

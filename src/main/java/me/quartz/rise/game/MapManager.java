@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MapManager {
 
@@ -14,9 +15,14 @@ public class MapManager {
         return maps;
     }
 
+    public List<Map> getReadyMaps() {
+        return maps.stream().filter(Map::isReady).collect(Collectors.toList());
+    }
+
     public Map createMap() {
         Map map = new Map();
         maps.add(map);
+        map.serialize();
         return map;
     }
 

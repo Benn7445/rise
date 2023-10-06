@@ -1,6 +1,7 @@
 package me.quartz.rise;
 
 import me.quartz.rise.commands.MapCommand;
+import me.quartz.rise.files.FileManager;
 import me.quartz.rise.game.Game;
 import me.quartz.rise.game.GameManager;
 import me.quartz.rise.game.MapManager;
@@ -18,12 +19,17 @@ public final class Rise extends JavaPlugin {
 
     private static Rise instance;
 
+    private FileManager fileManager;
     private MapManager mapManager;
     private ScoreManager scoreManager;
     private GameManager gameManager;
 
     public static Rise getInstance() {
         return instance;
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
     }
 
     public MapManager getMapManager() {
@@ -52,6 +58,7 @@ public final class Rise extends JavaPlugin {
     }
 
     private void registerManagers() {
+        fileManager = new FileManager();
         mapManager = new MapManager();
         scoreManager = new ScoreManager();
         gameManager = new GameManager();
