@@ -46,6 +46,10 @@ public class Map {
         return arenas;
     }
 
+    public void setArenas(List<Arena> arenas) {
+        this.arenas = arenas;
+    }
+
     public void generateArenas() {
         this.arenas = new ArrayList<>();
         for(int i = 0; i < 4; i++) arenas.add(new Arena(arenas.size() + 1, this, ArenaType.ROUND));
@@ -55,7 +59,8 @@ public class Map {
 
     public boolean isReady() {
         boolean ready = waitingLocation != null;
-        if(arenas.stream().anyMatch(arena -> arena.getSpawnLocations().size() < 2 || arena.getDoor() == null || arena.getStair() == null)) ready = false;
+        if(arenas.stream().anyMatch(arena -> arena.getSpawnLocations().size() < 2)) ready = false;
+        if(arenas.stream().anyMatch(arena -> (arena.getDoor() == null || arena.getStair() == null) && arena.getArenaType() != ArenaType.FINAL)) ready = false;
         return ready;
     }
 

@@ -1,7 +1,6 @@
 package me.quartz.rise.scoreHelper;
 
 import me.quartz.rise.Rise;
-import me.quartz.rise.game.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,7 +18,18 @@ public class ScoreManager {
 
     public void createScoreboard(Player player) {
         ScoreHelper helper = ScoreHelper.createScore(player);
-        helper.setTitle("&a&lRise");
+        helper.setTitle("&c&lRise");
+        setCorrectScoreBoard(player, helper);
+    }
+
+    public void updateScoreboard(Player player) {
+        if(ScoreHelper.hasScore(player)) {
+            ScoreHelper helper = ScoreHelper.getByPlayer(player);
+            setCorrectScoreBoard(player, helper);
+        }
+    }
+
+    private void setCorrectScoreBoard(Player player, ScoreHelper helper) {
         boolean isInGame = Rise.getInstance().getGameManager().isInGame(player);
         if(isInGame) {
             helper.setSlot(10, "&6&lYou");
@@ -40,13 +50,6 @@ public class ScoreManager {
             helper.setSlot(3, "Setup Mode");
             helper.setSlot(2, " ");
             helper.setSlot(1, "&cminebadmc.com");
-        }
-    }
-
-    public void updateScoreboard(Player player) {
-        if(ScoreHelper.hasScore(player)) {
-            ScoreHelper helper = ScoreHelper.getByPlayer(player);
-            // helper.setSlot(7, " ");
         }
     }
 

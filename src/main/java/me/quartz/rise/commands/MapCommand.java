@@ -2,6 +2,7 @@ package me.quartz.rise.commands;
 
 import me.quartz.rise.Rise;
 import me.quartz.rise.game.Arena;
+import me.quartz.rise.game.ArenaType;
 import me.quartz.rise.game.Map;
 import me.quartz.rise.game.MapCreator;
 import me.quartz.rise.utils.BlocksUtil;
@@ -22,7 +23,18 @@ public class MapCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if (args.length > 0) {
-            if (args[0].equalsIgnoreCase("create")) {
+            if(args[0].equalsIgnoreCase("help")) {
+                commandSender.sendMessage(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
+                commandSender.sendMessage(ChatColor.YELLOW + "/map create");
+                commandSender.sendMessage(ChatColor.YELLOW + "/map list");
+                commandSender.sendMessage(ChatColor.YELLOW + "/map info");
+                commandSender.sendMessage(ChatColor.YELLOW + "/map wand");
+                commandSender.sendMessage(ChatColor.YELLOW + "/map waiting " + ChatColor.GREEN + "[id]");
+                commandSender.sendMessage(ChatColor.YELLOW + "/map stairs " + ChatColor.GREEN + "[id] [arena]");
+                commandSender.sendMessage(ChatColor.YELLOW + "/map door " + ChatColor.GREEN + "[id] [arena]");
+                commandSender.sendMessage(ChatColor.YELLOW + "/map location " + ChatColor.GREEN + "[id] [arena] [1-2]");
+                commandSender.sendMessage(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
+            } else if (args[0].equalsIgnoreCase("create")) {
                 Map map = Rise.getInstance().getMapManager().createMap();
                 commandSender.sendMessage(ChatColor.GREEN + "Map " + map.getId() + " has been created.");
             } else if (args[0].equalsIgnoreCase("wand")) {
@@ -48,12 +60,16 @@ public class MapCommand implements CommandExecutor {
                     if (map != null) {
                         commandSender.sendMessage(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
                         if (!Rise.getInstance().getMapManager().getMaps().isEmpty()) {
+                            commandSender.sendMessage(ChatColor.YELLOW + "Map " + map.getId() + ChatColor.GRAY + " (" + (map.isReady() ? ChatColor.GREEN + "Ready" : ChatColor.RED + "Ready") + ChatColor.GRAY + ")");
+                            commandSender.sendMessage(" ");
                             for (Arena arena : map.getArenas()) {
                                 commandSender.sendMessage(
                                         ChatColor.YELLOW.toString() + arena.getArenaType() + " Arena " + arena.getId() + ChatColor.GRAY + " - " +
-                                                (arena.getDoor().isEmpty() ? ChatColor.RED + "Door" : ChatColor.GREEN + "Door") + ChatColor.GRAY + " - " +
-                                                (arena.getStair().isEmpty() ? ChatColor.RED + "Stairs" : ChatColor.GREEN + "Stairs") + ChatColor.GRAY + " - " +
-                                                (arena.getSpawnLocations().stream().filter(Objects::nonNull).count() != 2 ? ChatColor.RED + "Spawn Locations" : ChatColor.GREEN + "Spawn Locations")
+                                                (arena.getArenaType() != ArenaType.FINAL ? (
+                                                        (arena.getDoor().isEmpty() ? ChatColor.RED + "Door" : ChatColor.GREEN + "Door") + ChatColor.GRAY + " - " +
+                                                        (arena.getStair().isEmpty() ? ChatColor.RED + "Stairs" : ChatColor.GREEN + "Stairs") + ChatColor.GRAY + " - ")
+                                                        : "") +
+                                                        (arena.getSpawnLocations().stream().filter(Objects::nonNull).count() != 2 ? ChatColor.RED + "Spawn Locations" : ChatColor.GREEN + "Spawn Locations")
                                 );
                             }
                         } else commandSender.sendMessage(ChatColor.RED + "There are no existing maps.");

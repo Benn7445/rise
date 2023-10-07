@@ -20,14 +20,10 @@ public class BlocksUtil {
         int topBlockZ = (Math.max(loc1.getBlockZ(), loc2.getBlockZ()));
         int bottomBlockZ = (Math.min(loc1.getBlockZ(), loc2.getBlockZ()));
 
-        for(int x = bottomBlockX; x <= topBlockX; x++)
-        {
-            for(int z = bottomBlockZ; z <= topBlockZ; z++)
-            {
-                for(int y = bottomBlockY; y <= topBlockY; y++)
-                {
+        for(int x = bottomBlockX; x <= topBlockX; x++) {
+            for(int z = bottomBlockZ; z <= topBlockZ; z++) {
+                for(int y = bottomBlockY; y <= topBlockY; y++) {
                     Block block = loc1.getWorld().getBlockAt(x, y, z);
-
                     blocks.add(block);
                 }
             }
