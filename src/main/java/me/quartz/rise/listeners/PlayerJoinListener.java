@@ -27,6 +27,7 @@ public class PlayerJoinListener implements Listener {
             player.setHealth(20);
             player.setFoodLevel(20);
             event.setJoinMessage(ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.GRAY + "] " + player.getName() + " joined your game (" + game.getPlayers().size() + "/8).");
+            game.startGame();
         } else if(player.hasPermission("rise.setup")) {
             player.setGameMode(GameMode.CREATIVE);
         } else player.kickPlayer("Map is full");

@@ -2,7 +2,9 @@ package me.quartz.rise.game;
 
 import me.quartz.rise.Rise;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,8 @@ public class Game {
 
     // Changeable variables
     private final List<Player> players;
-    private boolean started;
+    private boolean setupped;
+    private ArenaType round;
     private int timer;
 
     public Game() {
@@ -22,8 +25,9 @@ public class Game {
             this.map = Rise.getInstance().getMapManager().getReadyMaps().get(new Random().nextInt(Rise.getInstance().getMapManager().getReadyMaps().size()));
         else this.map = null;
         this.players = new ArrayList<>();
-        this.started = false;
-        this.timer = 0;
+        this.setupped = false;
+        this.round = null;
+        this.timer = 10;
     }
 
     public Map getMap() {
@@ -47,19 +51,52 @@ public class Game {
         this.players.remove(player);
     }
 
-    public boolean isStarted() {
-        return started;
+    public boolean isSetupped() {
+        return setupped;
     }
 
-    public void setStarted(boolean started) {
-        this.started = started;
+    public void setSetupped(boolean setupped) {
+        this.setupped = setupped;
+    }
+
+    public ArenaType getRound() {
+        return round;
+    }
+
+    public void setRound(ArenaType round) {
+        this.round = round;
     }
 
     public int getTimer() {
         return timer;
     }
 
-    public void setTimer(int timer) {
-        this.timer = timer;
+    public void countdown() {
+        this.timer--;
+    }
+
+    public void startGame() {
+        if(players.size() == 8) {
+            new BukkitRunnable() {
+                public void run() {
+                    if(timer == 10 || (timer <= 5 && timer > 0) ) Bukkit.broadcastMessage(ChatColor.YELLOW + "Game is starting in " + ChatColor.GOLD + timer + "s" + ChatColor.YELLOW + ".");
+                    else if(timer == 0) {
+                        Bukkit.broadcastMessage(ChatColor.YELLOW + "Game is starting in " + ChatColor.GOLD + timer + "s" + ChatColor.YELLOW + ".");
+                        int arena = 0;
+                        int position = 0;
+                        for(Player player : players) {
+                            player.teleport(getMap().getArenas().get(arena).getSpawnLocations().get(position));
+                            if(position == 0) position++;
+                            else {
+                                position--;
+                                arena++;
+                            }
+                        }
+                        this.cancel();
+                    }
+                    countdown();
+                }
+            }.runTaskTimer(Rise.getInstance(), 0, 20);
+        }
     }
 }

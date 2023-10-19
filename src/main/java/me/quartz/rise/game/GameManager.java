@@ -10,20 +10,20 @@ public class GameManager {
     private Game game;
 
     public Game getGame() {
-        if(game == null) setupGame();
+        if(game == null) createGame();
         if(game.getMap() == null) game.setMap();
 
-        if(!game.isStarted()) startGame();
+        if(!game.isSetupped()) setupGame();
 
         return game;
     }
 
-    public void setupGame() {
+    public void createGame() {
         game = new Game();
     }
 
-    private void startGame() {
-        game.setStarted(true);
+    private void setupGame() {
+        game.setSetupped(true);
         if(game.getMap() != null) {
             for(Arena arena : game.getMap().getArenas()) {
                 for(Block block : arena.getStair()) block.setType(Material.AIR);

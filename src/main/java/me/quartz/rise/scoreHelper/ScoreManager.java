@@ -1,6 +1,7 @@
 package me.quartz.rise.scoreHelper;
 
 import me.quartz.rise.Rise;
+import me.quartz.rise.game.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -32,11 +33,12 @@ public class ScoreManager {
     private void setCorrectScoreBoard(Player player, ScoreHelper helper) {
         boolean isInGame = Rise.getInstance().getGameManager().isInGame(player);
         if(isInGame) {
+            Game game = Rise.getInstance().getGameManager().getGame();
             helper.setSlot(10, "&6&lYou");
             helper.setSlot(9, player.getName());
             helper.setSlot(8, " ");
             helper.setSlot(7, "&6&lRound");
-            helper.setSlot(6, "Round Starting...");
+            helper.setSlot(6, game.getRound() != null ? game.getRound().toString() : "Round Starting...");
             helper.setSlot(5, " ");
             helper.setSlot(4, "&6&lServer");
             helper.setSlot(3, "RISE");
